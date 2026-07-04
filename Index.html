@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Eslam & Farah — We Are Engaged</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Great+Vibes&family=Jost:wght@300;400;500&family=Aref+Ruqaa:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ivory:#FBF3E6;
+    --ivory-2:#F6E9D8;
+    --rose-deep:#732A38;
+    --rose-deeper:#4F1E29;
+    --rose-mid:#C98A93;
+    --gold:#BF9A5E;
+    --gold-light:#E7CE9A;
+    --ink:#3A2226;
+    --ink-soft:#6B4A4F;
+  }
+
+  *{ box-sizing: border-box; }
+
+  html, body{
+    margin:0;
+    padding:0;
+    min-height:100%;
+    background: radial-gradient(ellipse at 50% 20%, #FCF6EC 0%, #F1E1CC 55%, #E9D3B6 100%);
+    overflow-x: hidden;
+    overflow-y: auto;
+    font-family: 'Jost', sans-serif;
+    color: var(--ink);
+  }
+
+  .scene{
+    position: relative;
+    width: 100vw;
+    min-height: 100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding: 60px 0;
+  }
+
+  /* ---------- ambient petals ---------- */
+  .petals{
+    position:absolute; inset:0;
+    pointer-events:none;
+    overflow:hidden;
+  }
+  .petal{
+    position:absolute;
+    top:-40px;
+    width: 10px;
+    height: 14px;
+    background: var(--rose-mid);
+    opacity:0.55;
+    border-radius: 60% 10% 60% 10%;
+    animation: fall linear infinite;
+  }
+  @keyframes fall{
+    0%{ transform: translateY(0) rotate(0deg); opacity:0; }
+    8%{ opacity:0.6; }
+    92%{ opacity:0.5; }
+    100%{ transform: translateY(112vh) rotate(280deg); opacity:0; }
+  }
+
+  /* ---------- envelope wrap ---------- */
+  .envelope-wrap{
+    position:relative;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap: 28px;
+    z-index: 2;
+  }
+
+  .envelope{
+    position:relative;
+    width: clamp(270px, 70vw, 390px);
+    height: clamp(210px, 54vw, 275px);
+    perspective: 1400px;
+    overflow: hidden;
+  }
+  .envelope.open{
+    overflow: visible;
+  }
+
+  .env-body{
+    position:absolute;
+    inset:0;
+    z-index:1;
+    background: linear-gradient(160deg, var(--rose-deep), var(--rose-deeper));
+    border-radius: 6px;
+    box-shadow:
+      0 30px 60px -20px rgba(41, 16, 21, 0.55),
+      0 8px 20px -10px rgba(41,16,21,0.4);
+  }
+  .env-body::after{
+    content:"";
+    position:absolute; inset:0;
+    border-radius:6px;
+    border: 1px solid rgba(231, 206, 154, 0.35);
+    margin: 6px;
+  }
+
+  .letter{
+    position:absolute;
+    left: 7%;
+    width: 86%;
+    top: 40%;
+    z-index:2;
+    background: linear-gradient(180deg, var(--ivory), var(--ivory-2));
+    border-radius: 4px;
+    box-shadow: 0 -6px 18px rgba(41,16,21,0.18);
+    border: 1px solid var(--gold-light);
+    transition: transform 1.1s cubic-bezier(.22,.9,.32,1.15), z-index 0s 0.55s;
+    padding: 7% 6% 8%;
+  }
+
+  .letter-inner{
+    text-align:center;
+    width:100%;
+  }
+
+  .eyebrow{
+    font-family:'Jost', sans-serif;
+    font-size: clamp(9px, 2vw, 11px);
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    margin-bottom: 8px;
+    opacity:0;
+    transform: translateY(6px);
+    transition: opacity .7s ease, transform .7s ease;
+  }
+
+  .script{
+    font-family: 'Great Vibes', cursive;
+    font-size: clamp(40px, 6.4vw, 40px);
+    color: var(--rose-deep);
+    margin: 0 0 4px;
+    opacity:0;
+    transform: translateY(8px);
+    transition: opacity .8s ease .1s, transform .8s ease .1s;
+  }
+
+  .names{
+    font-family:'Playfair Display', serif;
+    font-weight:600;
+    font-size: clamp(20px, 5.6vw, 30px);
+    color: var(--ink);
+    margin: 2px 0 8px;
+    letter-spacing: 0.01em;
+    opacity:0;
+    transform: translateY(8px);
+    transition: opacity .8s ease .22s, transform .8s ease .22s;
+  }
+  .names .amp{
+    font-family:'Cormorant Garamond', serif;
+    font-style: italic;
+    color: var(--gold);
+    padding: 0 6px;
+  }
+
+  .names-ar{
+    font-family: 'Aref Ruqaa', serif;
+    font-weight: 700;
+    font-size: clamp(22px, 6vw, 32px);
+    color: var(--rose-deep);
+    direction: rtl;
+    margin: 0 0 10px;
+    opacity:0;
+    transform: translateY(8px);
+    transition: opacity .8s ease .3s, transform .8s ease .3s;
+  }
+  .names-ar .amp-ar{
+    font-family: 'Aref Ruqaa', serif;
+    color: var(--gold);
+    padding: 0 8px;
+    font-weight: 400;
+  }
+
+  .star-divider{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap: 10px;
+    margin: 2px auto 10px;
+    opacity:0;
+    transition: opacity .8s ease .4s;
+  }
+  .star-divider .line{
+    height:1px;
+    width: 34px;
+    background: var(--gold);
+    opacity: 0.7;
+  }
+  .star-divider svg{ width:14px; height:14px; }
+
+  .date{
+    font-family:'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: clamp(14px, 3.6vw, 18px);
+    letter-spacing: 0.06em;
+    color: var(--ink-soft);
+    opacity:0;
+    transform: translateY(6px);
+    transition: opacity .8s ease .5s, transform .8s ease .5s;
+  }
+
+  .letter.revealed .eyebrow,
+  .letter.revealed .script,
+  .letter.revealed .names,
+  .letter.revealed .names-ar,
+  .letter.revealed .star-divider,
+  .letter.revealed .date{
+    opacity:1;
+    transform: translateY(0);
+  }
+
+  .flap{
+    position:absolute;
+    top:0; left:0;
+    width:100%;
+    height: 58%;
+    z-index:3;
+    background: linear-gradient(200deg, #7d3140, var(--rose-deeper));
+    clip-path: polygon(0 0, 100% 0, 50% 100%);
+    transform-origin: top center;
+    transform-style: preserve-3d;
+    transition: transform 1s cubic-bezier(.6,0,.3,1);
+    display:flex;
+    align-items:flex-end;
+    justify-content:center;
+    padding-bottom: 14%;
+  }
+
+  .seal{
+    width: clamp(48px, 13vw, 62px);
+    height: clamp(48px, 13vw, 62px);
+    border-radius: 50%;
+    background: radial-gradient(circle at 32% 28%, var(--gold-light), var(--gold) 60%, #8a6a34 100%);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-family:'Playfair Display', serif;
+    font-weight:700;
+    font-size: clamp(15px, 4vw, 19px);
+    color: var(--rose-deeper);
+    box-shadow: 0 6px 14px rgba(30,12,16,0.45), inset 0 1px 2px rgba(255,255,255,0.5);
+    cursor:pointer;
+    transition: transform .45s ease, opacity .45s ease;
+    user-select:none;
+    z-index: 5;
+    letter-spacing: 0.02em;
+  }
+  .seal:hover{ transform: scale(1.06); }
+
+  .seal.crack{
+    animation: crack 0.5s ease forwards;
+  }
+  @keyframes crack{
+    0%{ transform: scale(1); }
+    40%{ transform: scale(1.14) rotate(-4deg); }
+    100%{ transform: scale(0.2) rotate(12deg); opacity:0; }
+  }
+
+  .envelope.open .flap{
+    transform: rotateX(180deg);
+  }
+  .envelope.open .letter{
+    transform: translateY(-92%);
+    z-index:4;
+    transition: transform 1.1s cubic-bezier(.22,.9,.32,1.15);
+  }
+
+  .hint{
+    font-family:'Jost', sans-serif;
+    font-size: 12px;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    opacity: 0.75;
+    transition: opacity .6s ease;
+    animation: pulse 2.4s ease-in-out infinite;
+  }
+  .hint.hidden{ opacity:0; }
+
+  @keyframes pulse{
+    0%, 100%{ opacity: 0.45; }
+    50%{ opacity: 0.85; }
+  }
+
+  .sound-toggle{
+    position:absolute;
+    top: 22px;
+    right: 22px;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.55);
+    border: 1px solid var(--gold-light);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    cursor:pointer;
+    z-index: 10;
+    opacity:0;
+    pointer-events:none;
+    transition: opacity .8s ease .9s;
+    backdrop-filter: blur(3px);
+  }
+  .sound-toggle.visible{
+    opacity:1;
+    pointer-events:auto;
+  }
+  .sound-toggle svg{
+    width:20px; height:20px;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .petal{ animation: none; display:none; }
+    .hint{ animation: none; }
+  }
+</style>
+</head>
+<body>
+
+  <div class="scene">
+    <div class="petals" id="petals"></div>
+
+    <div class="sound-toggle" id="soundToggle" title="Music on/off">
+      <svg id="soundIcon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M4 9V15H8L13 20V4L8 9H4Z" fill="#732A38"/>
+        <path d="M16.5 8.5C17.5 9.5 18 10.7 18 12C18 13.3 17.5 14.5 16.5 15.5" stroke="#732A38" stroke-width="1.6" stroke-linecap="round"/>
+        <path d="M19 6C20.7 7.7 21.5 9.8 21.5 12C21.5 14.2 20.7 16.3 19 18" stroke="#732A38" stroke-width="1.6" stroke-linecap="round" opacity="0.6"/>
+      </svg>
+    </div>
+
+    <div class="envelope-wrap">
+      <div class="envelope" id="envelope">
+        <div class="env-body"></div>
+
+        <div class="letter" id="letter">
+          <div class="letter-inner">
+            <div class="script">We Are Engaged</div>
+            <div class="names">Eslam <span class="amp">&amp;</span> Farah</div>
+            <div class="names-ar">إسلام <span class="amp-ar">و</span> فرح</div>
+            <div class="star-divider">
+              <span class="line"></span>
+              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 0 L14.5 9.5 L24 12 L14.5 14.5 L12 24 L9.5 14.5 L0 12 L9.5 9.5 Z" fill="#BF9A5E"/>
+              </svg>
+              <span class="line"></span>
+            </div>
+            <div class="date">10 · July · 2026</div>
+          </div>
+        </div>
+
+        <div class="flap" id="flap">
+          <div class="seal" id="seal">E&amp;F</div>
+        </div>
+      </div>
+
+      <div class="hint" id="hint">Tap the seal to open</div>
+    </div>
+  </div>
+
+<script>
+  // ambient petals
+  const petalsContainer = document.getElementById('petals');
+  const petalCount = window.innerWidth < 500 ? 10 : 18;
+  for (let i = 0; i < petalCount; i++){
+    const p = document.createElement('div');
+    p.className = 'petal';
+    const left = Math.random() * 100;
+    const duration = 9 + Math.random() * 9;
+    const delay = Math.random() * 10;
+    const size = 8 + Math.random() * 8;
+    p.style.left = left + 'vw';
+    p.style.width = size + 'px';
+    p.style.height = (size * 1.4) + 'px';
+    p.style.animationDuration = duration + 's';
+    p.style.animationDelay = delay + 's';
+    petalsContainer.appendChild(p);
+  }
+
+  const seal = document.getElementById('seal');
+  const envelope = document.getElementById('envelope');
+  const letter = document.getElementById('letter');
+  const hint = document.getElementById('hint');
+  const soundToggle = document.getElementById('soundToggle');
+  const soundIcon = document.getElementById('soundIcon');
+  let opened = false;
+
+  // ---------- gentle romantic violin background music (Web Audio API, no external files) ----------
+  let audioCtx = null;
+  let masterGain = null;
+  let vibratoLFO = null;
+  let vibratoGain = null;
+  let musicLoopTimer = null;
+  let muted = false;
+
+  // bright, joyful romantic phrase (G major) — resolves upward on the tonic
+  const melody = [
+    { t: 0.00, f: 392.00, d: 0.55 }, // G4
+    { t: 0.60, f: 493.88, d: 0.55 }, // B4
+    { t: 1.20, f: 587.33, d: 0.55 }, // D5
+    { t: 1.80, f: 783.99, d: 0.95 }, // G5 — bright lift
+    { t: 2.85, f: 739.99, d: 0.45 }, // F#5
+    { t: 3.35, f: 659.25, d: 0.45 }, // E5
+    { t: 3.85, f: 587.33, d: 0.70 }, // D5
+    { t: 4.65, f: 493.88, d: 0.45 }, // B4
+    { t: 5.15, f: 523.25, d: 0.45 }, // C5
+    { t: 5.65, f: 587.33, d: 0.85 }, // D5
+    { t: 6.60, f: 783.99, d: 1.35 }, // G5 — joyful resolve, held bright
+  ];
+  const LOOP_LENGTH = 8.6;
+  const PAD_NOTES = [196.00, 246.94, 293.66]; // G3, B3, D4 — major triad, keeps the key clearly happy
+
+  function initAudio(){
+    if (audioCtx) return;
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+    masterGain = audioCtx.createGain();
+    masterGain.gain.value = 0.0001;
+    masterGain.connect(audioCtx.destination);
+    masterGain.gain.linearRampToValueAtTime(0.28, audioCtx.currentTime + 2.8);
+
+    // soft hall-like echo so the violin doesn't sound dry
+    const delay = audioCtx.createDelay();
+    delay.delayTime.value = 0.3;
+    const feedback = audioCtx.createGain();
+    feedback.gain.value = 0.16;
+    const delayFilter = audioCtx.createBiquadFilter();
+    delayFilter.type = 'lowpass';
+    delayFilter.frequency.value = 2100;
+
+    masterGain.connect(delay);
+    delay.connect(delayFilter);
+    delayFilter.connect(feedback);
+    feedback.connect(delay);
+    delay.connect(audioCtx.destination);
+
+    // shared vibrato LFO — the wobble that makes it read as a bowed string, not a synth
+    vibratoLFO = audioCtx.createOscillator();
+    vibratoLFO.type = 'sine';
+    vibratoLFO.frequency.value = 5.4;
+    vibratoGain = audioCtx.createGain();
+    vibratoGain.gain.value = 5; // cents of wobble — gentle, not weepy
+    vibratoLFO.connect(vibratoGain);
+    vibratoLFO.start();
+  }
+
+  function playPadChord(startTime, duration){
+    // a very soft sustained major triad underneath, so the key reads clearly happy
+    PAD_NOTES.forEach((freq, i) => {
+      const osc = audioCtx.createOscillator();
+      osc.type = 'sine';
+      osc.frequency.value = freq;
+      const g = audioCtx.createGain();
+      g.gain.setValueAtTime(0.0001, startTime);
+      g.gain.linearRampToValueAtTime(0.045, startTime + 1.2);
+      g.gain.linearRampToValueAtTime(0.045, startTime + duration - 1.0);
+      g.gain.exponentialRampToValueAtTime(0.0001, startTime + duration);
+      osc.connect(g);
+      g.connect(masterGain);
+      osc.start(startTime);
+      osc.stop(startTime + duration + 0.1);
+    });
+  }
+
+  function playViolinNote(freq, startTime, duration){
+    // body tone — sawtooth through a warm lowpass, like a bowed string
+    const osc = audioCtx.createOscillator();
+    osc.type = 'sawtooth';
+    osc.frequency.value = freq;
+
+    // quiet octave-up shimmer for overtone warmth
+    const overtone = audioCtx.createOscillator();
+    overtone.type = 'triangle';
+    overtone.frequency.value = freq * 2;
+
+    const filter = audioCtx.createBiquadFilter();
+    filter.type = 'lowpass';
+    filter.frequency.value = Math.min(3200, Math.max(1500, freq * 3.2));
+    filter.Q.value = 1.1;
+
+    const noteGain = audioCtx.createGain();
+    const overtoneGain = audioCtx.createGain();
+    overtoneGain.gain.value = 0.09;
+
+    // slow bow-like swell in, gentle release out — the "romantic" phrasing
+    const attack = Math.min(0.22, duration * 0.3);
+    const release = 0.35;
+    noteGain.gain.setValueAtTime(0.0001, startTime);
+    noteGain.gain.linearRampToValueAtTime(0.42, startTime + attack);
+    noteGain.gain.linearRampToValueAtTime(0.34, startTime + duration * 0.75);
+    noteGain.gain.exponentialRampToValueAtTime(0.0001, startTime + duration + release);
+
+    osc.connect(filter);
+    overtone.connect(overtoneGain);
+    overtoneGain.connect(filter);
+    filter.connect(noteGain);
+    noteGain.connect(masterGain);
+
+    vibratoGain.connect(osc.detune);
+    vibratoGain.connect(overtone.detune);
+
+    osc.start(startTime);
+    overtone.start(startTime);
+    osc.stop(startTime + duration + release + 0.1);
+    overtone.stop(startTime + duration + release + 0.1);
+  }
+
+  function scheduleLoop(){
+    const base = audioCtx.currentTime + 0.05;
+    playPadChord(base, LOOP_LENGTH);
+    melody.forEach(n => playViolinNote(n.f, base + n.t, n.d));
+    musicLoopTimer = setTimeout(scheduleLoop, LOOP_LENGTH * 1000);
+  }
+
+  function startMusic(){
+    initAudio();
+    if (audioCtx.state === 'suspended') audioCtx.resume();
+    if (!musicLoopTimer) scheduleLoop();
+    soundToggle.classList.add('visible');
+  }
+
+  function setMuted(state){
+    muted = state;
+    if (!masterGain) return;
+    masterGain.gain.cancelScheduledValues(audioCtx.currentTime);
+    masterGain.gain.linearRampToValueAtTime(muted ? 0.0001 : 0.28, audioCtx.currentTime + 0.4);
+    soundIcon.style.opacity = muted ? '0.4' : '1';
+  }
+
+  soundToggle.addEventListener('click', () => setMuted(!muted));
+
+  seal.addEventListener('click', () => {
+    if (opened) return;
+    opened = true;
+    hint.classList.add('hidden');
+    seal.classList.add('crack');
+
+    startMusic();
+
+    setTimeout(() => {
+      envelope.classList.add('open');
+    }, 380);
+
+    setTimeout(() => {
+      letter.classList.add('revealed');
+    }, 900);
+  });
+</script>
+
+</body>
+</html>
